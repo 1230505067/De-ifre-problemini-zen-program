@@ -1,0 +1,111 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+
+/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+
+int main(int argc, char *argv[]) {
+	
+printf("Dosya sifrelemek icin : 1\nSifreli dosyayi acmak icin : 2\nout.txt(sifreli dosyayi) silmek icin : 3\n(Sifreleme islemi oncesinde dosyasini silin!!!\nDosyayi sildikten sonra sifreleme islemini 2 kez yapiniz.)\n");
+	int secenek;
+	 scanf("%d",&secenek); 
+	 
+	 if(secenek==1){
+	 printf("Sifreleme anahtarini giriniz :");
+	 	int anahtar;
+	 scanf("%d",&anahtar);
+	char ch;
+	FILE* fp;
+	FILE* file;
+	/*   //BU SATIRLAR AÇILIRSA ŞİFRESİZ METİN YAZDIRILIR...
+	fp = fopen("C:/Users/Monster/OneDrive/Masaüstü/odev/input 1.txt", "r");
+	while (!feof(fp)) {
+		ch = getc(fp);	
+		printf("%c", ch);	
+		}
+		*/
+	/*	dosya okuyan pointer sona geldi tekrar okuma işlemini başlatarak pointerın başa gelmesini sağlıyorum */
+fp = fopen("input 1.txt", "r");//DOSYA SADECE OKUMA MODUNDA AÇILDI
+		printf("SIFRELI METIN : ");
+		file=fopen("out.txt","a");//DOSYA SADECE EKLEME MODUNDA AÇILDI
+	while (!feof(fp)) {              //BU DÖNGÜ İLE ŞİFRELENECEK DOSYANIN SONUNA KADAR İLERLİYORUM...
+		ch = getc(fp);               //DOSYAYI OKUDUM
+		int a=isalpha(ch);          //ALFABEYE DAHİL Mİ?
+
+		if(a!=0){                   //ALFABETİK BİR KARAKTER İSE 
+			ch=tolower(ch);        //KÜÇÜK HARFE DÖNÜŞTÜR
+			ch=ch-'a';            //KARAKTERDEN A ÇIKAR
+		          
+		ch +=anahtar;//ANAHTARI EKLE
+		ch%=26; //ALFABEDE BULUNAN KARAKTER SAYISI İLE MODUNU AL
+		ch +='a';//ÇIKARILAN A YI ŞİFRELEMEDEN SONRA TEKRAR EKLE
+			printf("%c",ch); //EKRANA YAZDIR
+			
+			fprintf(file,"%c",ch);//DOSYAYA YAZDIR
+		}
+		else{// EĞER ALFABETİK KARAKTER DEĞİLSE BOŞLUK OLDUĞUNU VAR SAYIYORUZ...
+		
+			char bosluk=32;
+				printf("%c",bosluk);//EKRANA YAZDIR
+		
+				fprintf(file,"%c",bosluk);//DOSYAYA YAZDIR
+		}
+
+
+	}
+getch();}
+
+else if(secenek==2){   //şifre çözme seçeneği
+	 printf("Sifreyi cozmek icin anahtarini giriniz :");
+	 	int anahtar;
+	 scanf("%d",&anahtar);//EĞER KULLANICI ANAHTARI BİLİYORSA DOSYAYI AÇALİR...
+	 char ch;
+	FILE* sifreli; //DOSYALAR İÇİN POİNTER'LAR OLUŞTURULDU
+	FILE* acik;
+	sifreli = fopen("out.txt", "r");//DOSYA SADECE OKUMA MODUNDA AÇILDI
+	
+		acik=fopen("şifre_cozulmus_metin.txt","a");//DOSYA SADECE EKLEME MODUNDA AÇILDI
+	while (!feof(sifreli)) {              //BU DÖNGÜ İLE ŞİFRELENECEK DOSYANIN SONUNA KADAR İLERLİYORUM...
+		ch = getc(sifreli);               //DOSYAYI OKUDUM
+		int a=isalpha(ch);          //ALFABEYE DAHİL Mİ?
+
+		if(a!=0){                   //ALFABETİK BİR KARAKTER İSE 
+			ch=tolower(ch);        //KÜÇÜK HARFE DÖNÜŞTÜR
+			ch=ch-'a';            //KARAKTERDEN A ÇIKAR
+		          
+		ch -=anahtar;//ANAHTARI CIKAR ÇÜNKÜ ŞİFRELERKEN TAM TERSİNİ YAPMIŞTIK
+		ch%=26;
+		ch +='a';
+			printf("%c",ch);//EKRANA YAZDIRIR
+			
+			fprintf(acik,"%c",ch);//DOSYAYA YAZDIRIR
+		}
+		else{
+		
+			char bosluk=32;
+				printf("%c",bosluk);//EKRANA YAZDIRIR
+		
+				fprintf(acik,"%c",bosluk);//DOSYAYA YAZDIRIR
+		}
+
+
+	}
+getch();////////////
+}
+
+else if(secenek==3){
+	int sonuc = remove("out.txt");//DOSYAYI SİLER
+
+  if(sonuc == 0){
+    fprintf(stdout, "Dosya silindi");
+  } else {
+    fprintf(stderr, "Dosya silinemedi");
+    return -1;
+  }
+
+	
+	
+}
+
+return 0;
+}
